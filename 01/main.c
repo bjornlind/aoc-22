@@ -1,14 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 // col1 = elfNbr, col2 = calories
 int calories[3][2];
-
-int maxCal;
-int firstElf;
-int secondElf;
-int thirdElf;
 
 int currentCal;
 int currentElf = 1;
@@ -33,12 +27,16 @@ int main(int argc, char* argv[])
     }
 
     char line[256];
-    int lineNbr = 0;
     
     while(fgets(line, sizeof(line), file))
     {
-        if(line[0] == '\n')
+        if(line[0] == '\n' || feof(file))
         {
+            if(feof)
+            {
+                currentCal += atoi(line);
+            }
+
             updateElfs(currentElf, currentCal);
 
             // Reset current values
@@ -48,13 +46,9 @@ int main(int argc, char* argv[])
         else
         {
             // Parse calorie value
-            int cal = atoi(line);
-            currentCal += cal;
+            currentCal += atoi(line);
         }    
     }
-
-    // Add last elf
-    updateElfs(currentElf, currentCal);
 
     int sum = 0;
 
@@ -64,7 +58,7 @@ int main(int argc, char* argv[])
         sum += calories[i][1];
     }
 
-    printf("The top three elves are carrying %d calories.\n", sum);
+    printf("These top three elves are carrying %d calories.\n", sum);
     fclose(file);
 
     return 0;
